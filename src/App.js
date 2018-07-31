@@ -18,7 +18,6 @@ class App extends Component {
   state = { isScatterLoad: false, identity: null }
   async componentDidMount() {
     this.scatter = await getScatter()
-    this.scatterB = await getScatter()
     const identity = await fetchIdentity()
     this.setState({ isScatterLoad: true, identity })
   }
@@ -53,24 +52,9 @@ class App extends Component {
   async signData(e) {
     const { scatter } = this
     const { publicKey } = this.state.identity
-    const signMsg = "Signing to Login foobar. 为 foobar 登录签名。foobar にサインインする。foobar에 로그인하십시오."
+    const signMsg = "By Signing, you will bind your Scatter identity with your account 1145141919XXOO"
 
     const sign = await scatter.getArbitrarySignature(
-      publicKey, 
-      signMsg, 
-      'Login Authentication', 
-      false
-    )
-    const recoveredPubKey = recover(sign, signMsg)
-    console.info(`recovered signer: ${recoveredPubKey} by signature: ${sign}`)
-  }
-
-  async signDataB(e) {
-    const { scatterB } = this
-    const { publicKey } = this.state.identity
-    const signMsg = "Signing to Login foobar. 为 foobar 登录签名。foobar にサインインする。foobar에 로그인하십시오."
-
-    const sign = await scatterB.getArbitrarySignature(
       publicKey, 
       signMsg, 
       'Login Authentication', 
@@ -101,11 +85,7 @@ class App extends Component {
             </button>
             <button className="button"
               onClick={(e) => this.signData(e)}>
-              SIGN DATA
-            </button>
-            <button className="button"
-              onClick={(e) => this.signDataB(e)}>
-              SIGN DATAB
+              SIGN MEMO with Scatter
             </button>
           </div>
         }

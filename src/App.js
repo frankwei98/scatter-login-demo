@@ -93,7 +93,8 @@ class App extends Component {
         </p>
         {identity &&
           <div className="logined">
-            <h3 className="title"> Your Scatter Token for this site & identity: {identity.publicKey} </h3>
+            <h1 className="title"> Your Scatter identity for this site is: </h1>
+            <h2 className="subtitle"> {identity.publicKey} </h2>
             <button className="button is-danger"
               onClick={(e) => this.signOut(e)}>
               SIGN OUT

@@ -34,12 +34,12 @@ class App extends Component {
 
   async requestIdentity(e) {
     const { scatter } = this
-    try {
-      await scatter.suggestNetwork(network)
-    } catch (error) {
-      console.info('User canceled to suggestNetwork')
-      return;
-    }
+    // try {
+    //   await scatter.suggestNetwork(network)
+    // } catch (error) {
+    //   console.info('User canceled to suggestNetwork')
+    //   return;
+    // }
     // const { scatter } = this.state
     scatter.getIdentity().then((identity) => {
       this.setState({ identity })

@@ -5,16 +5,15 @@ const ScatterContext = React.createContext(null);
 export const { Consumer } = ScatterContext
 
 export const withScatter = (Component) => (props) => (
-    <Consumer>
+    <ScatterConsumer>
         {
             scatter => <Component {...props} scatter={scatter} />
         }
-    </Consumer>
+    </ScatterConsumer>
 )
 
-
-
 export class ScatterProvider extends Component {
+    // We do all those scatter dirty job here
     state = { scatter: null }
 
     componentWillMount() {
@@ -36,3 +35,18 @@ export class ScatterProvider extends Component {
         )
     }
 }
+
+
+export class ScatterConsumer extends Component {
+    render() {
+        return (
+            <Consumer>
+                {
+                    scatter => this.props.children(scatter)
+                }
+            </Consumer>
+        )
+    }
+}
+
+

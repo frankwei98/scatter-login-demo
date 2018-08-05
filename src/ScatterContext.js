@@ -1,0 +1,38 @@
+import React, { Component } from 'react';
+
+const ScatterContext = React.createContext(null);
+
+export const { Consumer } = ScatterContext
+
+export const withScatter = (Component) => (props) => (
+    <Consumer>
+        {
+            scatter => <Component {...props} scatter={scatter} />
+        }
+    </Consumer>
+)
+
+
+
+export class ScatterProvider extends Component {
+    state = { scatter: null }
+
+    componentWillMount() {
+        // Listen to Scatter Loading
+        document.addEventListener('scatterLoaded', () => {
+            const scatter = window.scatter
+            this.setState({ scatter })
+            // It is good practice to take this off the window 
+            // once you have a reference to it. @GetScatter Team
+            window.scatter = null
+        })
+    }
+
+    render() {
+        return (
+            <ScatterContext.Provider value={this.state.scatter}>
+                {this.props.children(this.state)}
+            </ScatterContext.Provider>
+        )
+    }
+}

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { recover } from "eosjs-ecc";
-import { getScatter, fetchIdentity } from "./scatter";
 import logo from './logo.svg';
 import './App.css';
 
@@ -15,15 +14,12 @@ const network = {
 }
 
 class App extends Component {
-  state = { isScatterLoad: false, identity: null }
-  async componentDidMount() {
-    this.scatter = await getScatter()
-    const identity = await fetchIdentity()
-    this.setState({ isScatterLoad: true, identity })
-  }
+  state = { identity: null }
+
+  
 
   async signOut(e) {
-    const { scatter } = this
+    const { scatter } = this.props
     try {
       await scatter.forgetIdentity(network)
       this.setState({ identity: null })
@@ -33,7 +29,7 @@ class App extends Component {
   }
 
   async requestIdentity(e) {
-    const { scatter } = this
+    const { scatter } = this.props
     // try {
     //   await scatter.suggestNetwork(network)
     // } catch (error) {
@@ -50,7 +46,7 @@ class App extends Component {
   }
 
   async signData(e) {
-    const { scatter } = this
+    const { scatter } = this.props
     const { publicKey } = this.state.identity
     const signMsg = "By Signing, you will bind your Scatter identity with your account 1145141919XXOO"
 
@@ -65,7 +61,8 @@ class App extends Component {
   }
 
   render() {
-    const { isScatterLoad, identity } = this.state
+    const { identity } = this.state
+    const { scatter } = this.props
     return (
       <div className="App">
         <header className="App-header">
@@ -89,9 +86,9 @@ class App extends Component {
             </button>
           </div>
         }
-        {!identity && <button disabled={!isScatterLoad} className="button"
+        {!identity && <button disabled={!scatter} className="button"
           onClick={(e) => this.requestIdentity(e)}>
-          {isScatterLoad ? "SIGN IN" : "Please Install Scatter First"}
+          {this.props.scatter ? "SIGN IN" : "Please Install Scatter First"}
         </button>}
         <footer style={{textAlign: 'center'}}>
           © Frank Wei

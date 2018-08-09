@@ -1,22 +1,17 @@
 import React, { Component } from "react";
 import { recover } from "eosjs-ecc";
-
+import networking from "./networking.json";
 import { withScatter } from "./ScatterContext";
 
-const network = {
-    protocol: 'http', // Defaults to https
-    blockchain: 'eos',
-    host: '127.0.0.1', // ( or null if endorsed chainId )
-    port: 8888, // ( or null if defaulting to 80 )
-    chainId: 'cf057bbfb72640471fd910bcb67639c22df9f92470936cddc1ade0e2f2e7dc4f',
-}
 
 class Child extends Component {
     state = { identity: null }
+    network = networking['mainnet']
+    
     async signOut(e) {
         const { scatter } = this.props
         try {
-            await scatter.forgetIdentity(network)
+            await scatter.forgetIdentity(this.network)
             this.setState({ identity: null })
         } catch (error) {
 
@@ -32,7 +27,9 @@ class Child extends Component {
         //   return;
         // }
         // const { scatter } = this.state
-        scatter.getIdentity().then((identity) => {
+        scatter.getIdentity(
+            { accounts: [this.network] }
+        ).then((identity) => {
             this.setState({ identity })
         }).catch(error => {
             console.error(error.message)
